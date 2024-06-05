@@ -2,7 +2,6 @@ package webfinger
 
 import (
 	"encoding/xml"
-	"fmt"
 	"slices"
 
 	"github.com/MitarashiDango/ohagi-go-webfinger/nullable"
@@ -63,7 +62,6 @@ func (r Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		Value string `xml:",chardata"`
 	}
 
-	fmt.Println(start)
 	start.Name.Local = "XRD"
 	start.Name.Space = "http://docs.oasis-open.org/ns/xri/xrd-1.0"
 	start.Attr = append(start.Attr, xml.Attr{
