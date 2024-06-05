@@ -86,8 +86,17 @@ func (client *Client) Do(webFingerRequest *Request) (*Message, error) {
 }
 
 func (client *Client) createHTTPRequest(httpMode bool, webFingerRequest *Request) (*http.Request, error) {
-	requestURL := getSchema(httpMode) + "//" + webFingerRequest.Host + "/.well-known/webfinger?resource=" + url.QueryEscape(webFingerRequest.Resource)
-	request, err := http.NewRequest("GET", requestURL, nil)
+	// requestURL := ?resource=" + url.QueryEscape()
+	requestURL, err := url.Parse(getSchema(httpMode) + "//" + webFingerRequest.Host + "/.well-known/webfinger")
+	if err != nil {
+		return nil, err
+	}
+
+	queries := requestURL.Query()
+	queries.Set("resource", webFingerRequest.Resource)
+	requestURL.RawQuery = queries.Encode()
+
+	request, err := http.NewRequest("GET", requestURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
