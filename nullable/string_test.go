@@ -2,6 +2,7 @@ package nullable_test
 
 import (
 	"encoding/json"
+	"errors"
 	"testing"
 
 	"github.com/MitarashiDango/ohagi-go-webfinger/nullable"
@@ -78,6 +79,134 @@ func Test_String_SetNil_002(t *testing.T) {
 
 	if s.StringOrZero() != "" {
 		t.Fail()
+	}
+}
+
+func Test_String_Equal_001_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	if !val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_002_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  false,
+		String: "",
+	}
+
+	val2 := nullable.String{
+		Valid:  false,
+		String: "",
+	}
+
+	if !val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_003_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_004_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  true,
+		String: "",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_005_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  false,
+		String: "test",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_006_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  false,
+		String: "",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_007_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  false,
+		String: "test",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
+	}
+}
+
+func Test_String_Equal_008_Equal(t *testing.T) {
+	val1 := nullable.String{
+		Valid:  false,
+		String: "",
+	}
+
+	val2 := nullable.String{
+		Valid:  true,
+		String: "test",
+	}
+
+	if val1.Equal(val2) {
+		t.FailNow()
 	}
 }
 
@@ -168,6 +297,22 @@ func Test_String_UnmarshalJSON_004(t *testing.T) {
 
 	if dest.Test.StringOrZero() != "nil" {
 		t.Fail()
+	}
+}
+
+func Test_String_UnmarshalJSON_005(t *testing.T) {
+	jsonString := `{"test":12345}`
+
+	var dest struct {
+		Test nullable.String `json:"test"`
+	}
+
+	if err := json.Unmarshal([]byte(jsonString), &dest); err != nil {
+		if !errors.Is(err, nullable.ErrIncorrectValueType) {
+			t.FailNow()
+		}
+	} else {
+		t.FailNow()
 	}
 }
 
