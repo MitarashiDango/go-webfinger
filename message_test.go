@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/MitarashiDango/ohagi-go-webfinger/nullable"
+	"github.com/MitarashiDango/go-webfinger/nullable"
 )
 
 func Test_Message_UnmarshalXML_001(t *testing.T) {

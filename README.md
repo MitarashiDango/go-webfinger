@@ -1,1 +1,1 @@
-# ohagi-go-webfinger (WebFinger Module for Ohagi)
+# go-webfinger (WebFinger Module for Ohagi)

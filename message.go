@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"slices"
 
-	"github.com/MitarashiDango/ohagi-go-webfinger/nullable"
+	"github.com/MitarashiDango/go-webfinger/nullable"
 )
 
 type Properties map[string]nullable.String

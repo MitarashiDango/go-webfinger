@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	webfinger "github.com/MitarashiDango/ohagi-go-webfinger"
+	webfinger "github.com/MitarashiDango/go-webfinger"
 )
 
 func Test_Error_Unwrap_001(t *testing.T) {

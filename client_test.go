@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"testing"
 
-	webfinger "github.com/MitarashiDango/ohagi-go-webfinger"
+	webfinger "github.com/MitarashiDango/go-webfinger"
 )
 
 func Test_Client_Do_JSONResponse(t *testing.T) {

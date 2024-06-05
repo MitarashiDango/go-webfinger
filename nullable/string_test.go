@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/MitarashiDango/ohagi-go-webfinger/nullable"
+	"github.com/MitarashiDango/go-webfinger/nullable"
 )
 
 func Test_String_IsZero_ValidString(t *testing.T) {
