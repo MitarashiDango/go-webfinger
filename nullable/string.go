@@ -23,7 +23,19 @@ func (s *String) SetNil() {
 }
 
 func (s String) Equal(value String) bool {
-	return s.Valid == value.Valid && s.String == value.String
+	if s.Valid != value.Valid {
+		return false
+	}
+
+	if !s.Valid {
+		return true
+	}
+
+	if s.String != value.String {
+		return false
+	}
+
+	return true
 }
 
 func (s String) StringOrZero() string {
