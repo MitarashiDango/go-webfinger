@@ -2,7 +2,6 @@ package nullable
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type String struct {
@@ -60,7 +59,6 @@ func (s *String) UnmarshalJSON(data []byte) error {
 		s.String, s.Valid = "", false
 		return nil
 	default:
-		fmt.Println(v)
 		return ErrIncorrectValueType
 	}
 }
