@@ -10,7 +10,7 @@ import (
 
 type Properties map[string]nullable.String
 
-type Resource struct {
+type Message struct {
 	Subject    string     `json:"subject"`
 	Aliases    []string   `json:"aliases,omitempty"`
 	Properties Properties `json:"properties,omitempty"`
@@ -23,7 +23,7 @@ type Link struct {
 	Href string `json:"href,omitempty" xml:"href,attr,omitempty"`
 }
 
-func (r *Resource) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (r *Message) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var src struct {
 		Subject    string   `xml:"Subject"`
 		Aliases    []string `xml:"Alias"`
@@ -56,7 +56,7 @@ func (r *Resource) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
-func (r Resource) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (r Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type tmpProperties struct {
 		Type  string `xml:"type,attr,omitempty"`
 		Nil   bool   `xml:"xsi:nil,attr,omitempty"`
