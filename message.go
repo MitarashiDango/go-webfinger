@@ -22,6 +22,16 @@ type Link struct {
 	Href string `json:"href,omitempty" xml:"href,attr,omitempty"`
 }
 
+func (r Message) GetLinkByType(t string) *Link {
+	for _, link := range r.Links {
+		if link.Type == t {
+			return &link
+		}
+	}
+
+	return nil
+}
+
 func (r *Message) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var src struct {
 		Subject    string   `xml:"Subject"`

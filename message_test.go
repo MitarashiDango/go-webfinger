@@ -8,6 +8,57 @@ import (
 	"github.com/MitarashiDango/go-webfinger/nullable"
 )
 
+func Test_Message_GetLinkByType_Exists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test",
+			},
+		},
+	}
+
+	link := m.GetLinkByType("application/activity+json")
+	if link == nil {
+		t.FailNow()
+	} else if link.Href != "http://localhost/users/test" {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetLinkByType_NotExists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+		},
+	}
+
+	link := m.GetLinkByType("application/activity+json")
+	if link != nil {
+		t.FailNow()
+	}
+}
+
 func Test_Message_UnmarshalXML_001(t *testing.T) {
 	xmlString := `<?xml version='1.0'?>
 <XRD xmlns="http://docs.oasis-open.org/ns/xri/xrd-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
