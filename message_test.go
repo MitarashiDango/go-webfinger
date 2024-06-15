@@ -59,6 +59,178 @@ func Test_Message_GetLinkByType_NotExists(t *testing.T) {
 	}
 }
 
+func Test_Message_GetLinksByType_Exists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test2",
+			},
+		},
+	}
+
+	links := m.GetLinksByType("application/activity+json")
+	if len(links) != 2 {
+		t.FailNow()
+	} else if links[0].Href != "http://localhost/users/test" {
+		t.FailNow()
+	} else if links[1].Href != "http://localhost/users/test2" {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetLinksByType_NotExists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+		},
+	}
+
+	links := m.GetLinksByType("application/activity+json")
+	if len(links) != 0 {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetFirstLinkByRelationType_Exists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test2",
+			},
+		},
+	}
+
+	link := m.GetFirstLinkByRelationType("self")
+	if link == nil {
+		t.FailNow()
+	} else if link.Href != "http://localhost/users/test" {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetFirstLinkByRelationType_NotExists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+		},
+	}
+
+	link := m.GetFirstLinkByRelationType("self")
+	if link != nil {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetLinksByRelationType_Exists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test",
+			},
+			{
+				Rel:  "self",
+				Type: "application/activity+json",
+				Href: "http://localhost/users/test2",
+			},
+		},
+	}
+
+	links := m.GetLinksByRelationType("self")
+	if len(links) != 2 {
+		t.FailNow()
+	} else if links[0].Href != "http://localhost/users/test" {
+		t.FailNow()
+	} else if links[1].Href != "http://localhost/users/test2" {
+		t.FailNow()
+	}
+}
+
+func Test_Message_GetLinksByRelationType_NotExists(t *testing.T) {
+	m := Message{
+		Subject: "acct:test@localhost",
+		Aliases: []string{
+			"http://localhost/@test",
+			"http://localhost/users/test",
+		},
+		Links: []Link{
+			{
+				Rel:  "http://webfinger.net/rel/profile-page",
+				Type: "text/html",
+				Href: "http://localhost/@test",
+			},
+		},
+	}
+
+	links := m.GetLinksByRelationType("self")
+	if len(links) != 0 {
+		t.FailNow()
+	}
+}
+
 func Test_Message_UnmarshalXML_001(t *testing.T) {
 	xmlString := `<?xml version='1.0'?>
 <XRD xmlns="http://docs.oasis-open.org/ns/xri/xrd-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

@@ -32,6 +32,38 @@ func (r Message) GetLinkByType(t string) *Link {
 	return nil
 }
 
+func (r Message) GetLinksByType(t string) []Link {
+	result := make([]Link, 0)
+	for _, link := range r.Links {
+		if link.Type == t {
+			result = append(result, link)
+		}
+	}
+
+	return result
+}
+
+func (r Message) GetFirstLinkByRelationType(t string) *Link {
+	for _, link := range r.Links {
+		if link.Rel == t {
+			return &link
+		}
+	}
+
+	return nil
+}
+
+func (r Message) GetLinksByRelationType(t string) []Link {
+	result := make([]Link, 0)
+	for _, link := range r.Links {
+		if link.Rel == t {
+			result = append(result, link)
+		}
+	}
+
+	return result
+}
+
 func (r *Message) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var src struct {
 		Subject    string   `xml:"Subject"`
