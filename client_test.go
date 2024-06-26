@@ -439,3 +439,131 @@ func Test_Client_Do_InvalidContentType(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func Test_isXML(t *testing.T) {
+	tests := []struct {
+		Params struct {
+			MediaType            string
+			AdditionalMediaTypes []string
+		}
+		Expected bool
+	}{
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/xrd+xml",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: true,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/xml",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: true,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "text/xml",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: true,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/json",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: false,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/json",
+				AdditionalMediaTypes: []string{"application/json"},
+			},
+			Expected: true,
+		},
+	}
+
+	for i, test := range tests {
+		actual := webfinger.ExportForTesting_isXML(test.Params.MediaType, test.Params.AdditionalMediaTypes)
+		if test.Expected != actual {
+			t.Logf("case_index: %d, expected: %v, actual: %v", i, test.Expected, actual)
+			t.Fail()
+		}
+	}
+}
+
+func Test_isJSON(t *testing.T) {
+	tests := []struct {
+		Params struct {
+			MediaType            string
+			AdditionalMediaTypes []string
+		}
+		Expected bool
+	}{
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/jrd+json",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: true,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/json",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: true,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/activity+json",
+				AdditionalMediaTypes: nil,
+			},
+			Expected: false,
+		},
+		{
+			Params: struct {
+				MediaType            string
+				AdditionalMediaTypes []string
+			}{
+				MediaType:            "application/activity+json",
+				AdditionalMediaTypes: []string{"application/activity+json"},
+			},
+			Expected: true,
+		},
+	}
+
+	for i, test := range tests {
+		actual := webfinger.ExportForTesting_isJSON(test.Params.MediaType, test.Params.AdditionalMediaTypes)
+		if test.Expected != actual {
+			t.Logf("case_index: %d, expected: %v, actual: %v", i, test.Expected, actual)
+			t.Fail()
+		}
+	}
+}

@@ -13,10 +13,16 @@ var DefaultClient = &Client{
 	HTTPClient: &http.Client{},
 }
 
+type AdditionalMediaTypes struct {
+	XML  []string
+	JSON []string
+}
+
 type Client struct {
-	HTTPClient *http.Client
-	UserAgent  string
-	HTTPMode   bool
+	HTTPClient           *http.Client
+	UserAgent            string
+	HTTPMode             bool
+	AdditionalMediaTypes *AdditionalMediaTypes
 }
 
 func (client *Client) Do(webFingerRequest *Request) (*Message, error) {
@@ -39,16 +45,21 @@ func (client *Client) Do(webFingerRequest *Request) (*Message, error) {
 		return nil, err
 	}
 
-	mimeType, _, err := mime.ParseMediaType(response.Header.Get("Content-Type"))
+	mediaType, _, err := mime.ParseMediaType(response.Header.Get("Content-Type"))
 	if err != nil {
 		return nil, &Error{
 			Err: err,
 		}
 	}
 
+	additionalMediaTypes := client.AdditionalMediaTypes
+	if client.AdditionalMediaTypes == nil {
+		additionalMediaTypes = &AdditionalMediaTypes{}
+	}
+
 	var webFingerMessage Message
 	switch {
-	case mimeType == "application/xrd+xml" || mimeType == "application/xml" || mimeType == "text/xml":
+	case isXML(mediaType, additionalMediaTypes.XML):
 		b, err := io.ReadAll(response.Body)
 		if err != nil {
 			return nil, err
@@ -62,7 +73,7 @@ func (client *Client) Do(webFingerRequest *Request) (*Message, error) {
 
 		return &webFingerMessage, nil
 
-	case mimeType == "application/jrd+json" || mimeType == "application/json":
+	case isJSON(mediaType, additionalMediaTypes.JSON):
 		b, err := io.ReadAll(response.Body)
 		if err != nil {
 			return nil, err
@@ -79,10 +90,38 @@ func (client *Client) Do(webFingerRequest *Request) (*Message, error) {
 	default:
 		return nil, &Error{
 			Err: &UnsupportedContentTypeError{
-				ContentType: mimeType,
+				ContentType: mediaType,
 			},
 		}
 	}
+}
+
+func isXML(mediaType string, AdditionalMediaTypes []string) bool {
+	if mediaType == "application/xrd+xml" || mediaType == "application/xml" || mediaType == "text/xml" {
+		return true
+	}
+
+	for _, AdditionalMediaType := range AdditionalMediaTypes {
+		if mediaType == AdditionalMediaType {
+			return true
+		}
+	}
+
+	return false
+}
+
+func isJSON(mediaType string, AdditionalMediaTypes []string) bool {
+	if mediaType == "application/jrd+json" || mediaType == "application/json" {
+		return true
+	}
+
+	for _, AdditionalMediaType := range AdditionalMediaTypes {
+		if mediaType == AdditionalMediaType {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (client *Client) createHTTPRequest(httpMode bool, webFingerRequest *Request) (*http.Request, error) {
