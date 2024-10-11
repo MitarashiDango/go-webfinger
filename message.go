@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"slices"
 
-	"github.com/MitarashiDango/go-webfinger/nullable"
+	"github.com/MitarashiDango/go-nullable"
 )
 
 type Properties map[string]nullable.String
@@ -85,7 +85,7 @@ func (r *Message) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	for _, v := range src.Properties {
 		var str nullable.String
 		if v.Nil || v.Nullable {
-			str.SetNil()
+			str.SetNull()
 		} else {
 			str.SetValue(v.Value)
 		}
@@ -134,7 +134,7 @@ func (r Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	for _, k := range mapKeys {
 		v := r.Properties[k]
 
-		if v.IsZero() {
+		if v.IsNull() {
 			src.Properties = append(src.Properties, tmpProperties{
 				Type: k,
 				Nil:  true,
@@ -143,7 +143,7 @@ func (r Message) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 			src.Properties = append(src.Properties, tmpProperties{
 				Type:  k,
 				Nil:   false,
-				Value: v.StringOrZero(),
+				Value: v.Value(),
 			})
 		}
 	}

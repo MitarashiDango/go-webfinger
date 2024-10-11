@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"testing"
 
-	"github.com/MitarashiDango/go-webfinger/nullable"
+	"github.com/MitarashiDango/go-nullable"
 )
 
 func Test_Message_GetLinkByType_Exists(t *testing.T) {
@@ -268,12 +268,12 @@ func Test_Message_UnmarshalXML_001(t *testing.T) {
 		case "testtype2":
 			expected.SetValue("teststring2")
 		case "testtype3":
-			expected.SetNil()
+			expected.SetNull()
 		case "testtype4":
-			expected.SetNil()
+			expected.SetNull()
 		}
 
-		rProperties[k] = expected.Equal(actual)
+		rProperties[k] = expected.Equals(actual)
 	}
 
 	if v, ok := rProperties["testtype1"]; !ok || !v {
@@ -347,12 +347,12 @@ func Test_Message_UnmarshalJSON_001(t *testing.T) {
 		case "testtype2":
 			expected.SetValue("teststring2")
 		case "testtype3":
-			expected.SetNil()
+			expected.SetNull()
 		case "testtype4":
-			expected.SetNil()
+			expected.SetNull()
 		}
 
-		rProperties[k] = expected.Equal(actual)
+		rProperties[k] = expected.Equals(actual)
 	}
 
 	if v, ok := rProperties["testtype1"]; !ok || !v {
@@ -409,18 +409,9 @@ func Test_Message_MarshalXML_001(t *testing.T) {
 			"http://localhost/users/test",
 		},
 		Properties: map[string]nullable.String{
-			"testtype1": {
-				Valid:  true,
-				String: "teststring1",
-			},
-			"testtype2": {
-				Valid:  true,
-				String: "teststring2",
-			},
-			"testtype3": {
-				Valid:  false,
-				String: "",
-			},
+			"testtype1": nullable.NewComparableNullable("teststring1"),
+			"testtype2": nullable.NewComparableNullable("teststring2"),
+			"testtype3": {},
 		},
 		Links: []Link{
 			{
@@ -455,18 +446,9 @@ func Test_Message_MarshalJSON_001(t *testing.T) {
 			"http://localhost/users/test",
 		},
 		Properties: map[string]nullable.String{
-			"testtype1": {
-				Valid:  true,
-				String: "teststring1",
-			},
-			"testtype2": {
-				Valid:  true,
-				String: "teststring2",
-			},
-			"testtype3": {
-				Valid:  false,
-				String: "",
-			},
+			"testtype1": nullable.NewComparableNullable("teststring1"),
+			"testtype2": nullable.NewComparableNullable("teststring2"),
+			"testtype3": {},
 		},
 		Links: []Link{
 			{
