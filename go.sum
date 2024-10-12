@@ -4,3 +4,5 @@ github.com/MitarashiDango/go-nullable v1.0.1 h1:2DQI+gd6cgu0GLdOMCfadOUBEnl4hGyj
 github.com/MitarashiDango/go-nullable v1.0.1/go.mod h1:XYXeZ7xeVAroOe+Didp1FONhdsTa2F6Q22CTFEZPTEk=
 github.com/MitarashiDango/go-nullable v1.0.2 h1:jqel42aQFKTDhR8Z9w6SU4F4g9kcJmWXMTjqoKJd+Vc=
 github.com/MitarashiDango/go-nullable v1.0.2/go.mod h1:XYXeZ7xeVAroOe+Didp1FONhdsTa2F6Q22CTFEZPTEk=
+github.com/MitarashiDango/go-nullable v1.0.3 h1:13EAA8IF459gA0MxgpGOgKE//RsQ3wECgA5H0Jumas0=
+github.com/MitarashiDango/go-nullable v1.0.3/go.mod h1:XYXeZ7xeVAroOe+Didp1FONhdsTa2F6Q22CTFEZPTEk=
