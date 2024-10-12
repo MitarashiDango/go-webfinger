@@ -273,7 +273,7 @@ func Test_Message_UnmarshalXML_001(t *testing.T) {
 			expected.SetNull()
 		}
 
-		rProperties[k] = expected.Equals(actual)
+		rProperties[k] = expected.Equal(actual)
 	}
 
 	if v, ok := rProperties["testtype1"]; !ok || !v {
@@ -352,7 +352,7 @@ func Test_Message_UnmarshalJSON_001(t *testing.T) {
 			expected.SetNull()
 		}
 
-		rProperties[k] = expected.Equals(actual)
+		rProperties[k] = expected.Equal(actual)
 	}
 
 	if v, ok := rProperties["testtype1"]; !ok || !v {
@@ -409,8 +409,8 @@ func Test_Message_MarshalXML_001(t *testing.T) {
 			"http://localhost/users/test",
 		},
 		Properties: map[string]nullable.String{
-			"testtype1": nullable.NewComparableNullable("teststring1"),
-			"testtype2": nullable.NewComparableNullable("teststring2"),
+			"testtype1": nullable.NewString("teststring1"),
+			"testtype2": nullable.NewString("teststring2"),
 			"testtype3": {},
 		},
 		Links: []Link{
@@ -446,8 +446,8 @@ func Test_Message_MarshalJSON_001(t *testing.T) {
 			"http://localhost/users/test",
 		},
 		Properties: map[string]nullable.String{
-			"testtype1": nullable.NewComparableNullable("teststring1"),
-			"testtype2": nullable.NewComparableNullable("teststring2"),
+			"testtype1": nullable.NewString("teststring1"),
+			"testtype2": nullable.NewString("teststring2"),
 			"testtype3": {},
 		},
 		Links: []Link{
